@@ -17,12 +17,9 @@ class StageToRedshiftOperator(BaseOperator):
 
     @apply_defaults
     def __init__(self,
-                 # Define your operators params (with defaults) here
-                 # Example:
                  redshift_conn_id='',
                  aws_credentials_id='',
                  table='',
-                 destination_table='',
                  s3_bucket="",
                  s3_key='',
                  delimiter=',',
@@ -34,7 +31,7 @@ class StageToRedshiftOperator(BaseOperator):
         # Example:
         self.redshift_conn_id = redshift_conn_id
         self.aws_credentials_id = aws_credentials_id
-        self.destination_table = destination_table
+        self.table = table
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
 
