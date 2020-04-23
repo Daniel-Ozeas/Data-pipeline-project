@@ -36,7 +36,7 @@ class StageToRedshiftOperator(BaseOperator):
         self.aws_credentials_id = aws_credentials_id
         self.destination_table = destination_table
         self.s3_bucket = s3_bucket
-        self.key = key
+        self.s3_key = s3_key
 
     def execute(self, context):
         aws_hook = AwsHook(self.aws_credentials_id)
