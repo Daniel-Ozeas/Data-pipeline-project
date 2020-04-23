@@ -8,15 +8,24 @@ class LoadDimensionOperator(BaseOperator):
 
     @apply_defaults
     def __init__(self,
-                 # Define your operators params (with defaults) here
-                 # Example:
-                 # conn_id = your-connection-name
+                redshift_conn_id = '',
+                sql = '',
+                truncate_table = True,
+                table = '',
                  *args, **kwargs):
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
-        # Map params here
-        # Example:
-        # self.conn_id = conn_id
+        
+        self.redshift_conn_id = redshift_conn_id
+        self.sql = sql,
+        self.truncate_table = truncate_table,
+        self.table = table
 
     def execute(self, context):
-        self.log.info('LoadDimensionOperator not implemented yet')
+        redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
+        if self.truncate_table:
+            redshift.run(f'TRUNCATE {self.table}')
+        self.log.info(f'The table {self.table} was truncated.')
+
+        redshift.run(f'INSERT INTO {self.table} {self.sql}')  
+        self.log.info(f'The insertion in {self.table} was completed.')
