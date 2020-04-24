@@ -25,7 +25,10 @@ class LoadFactOperator(BaseOperator):
 
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         if self.truncate_table:
-            redshift.run(f'TRUNCATE {self.table}')
-        self.log.info(f'Fact table {self.table} truncated.')
-        redshift.run(f'INSERT INTO {self.table} {self.sql}')
-        self.log.info(f'Fact table with data.')
+            redshift.run(f'INSERT INTO {self.table} {self.sql} WHERE NOT EXISTS (SELECT * FROM {self.table})')
+            self.log.info(f'Fact table with data.')
+        else:
+            redshift.run(f'TRUNCATE songplays')
+            self.log.info(f'Fact table {self.table} truncated.')
+
+        
