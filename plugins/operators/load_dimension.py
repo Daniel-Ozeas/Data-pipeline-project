@@ -28,4 +28,4 @@ class LoadDimensionOperator(BaseOperator):
         self.log.info(f'The table {self.table} was truncated.')
 
         redshift.run(f'INSERT INTO {self.table} {self.sql}')  
-        self.log.info(f'The insertion in {self.table} was completed.')
+        self.log.info('The insertion in {self.table} was completed.')
