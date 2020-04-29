@@ -106,7 +106,8 @@ load_time_dimension_table = LoadDimensionOperator(
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     dag=dag,
-    table=['users','songs','artists', 'time']
+    redshift_conn_id='redshift',
+    table=['users', 'songs', 'artists', 'time']    
 )
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
@@ -124,3 +125,10 @@ load_songplays_table >>load_user_dimension_table
 load_songplays_table >>load_song_dimension_table
 load_songplays_table >>load_artist_dimension_table
 load_songplays_table >>load_time_dimension_table
+#step 5
+load_user_dimension_table >> run_quality_checks
+load_song_dimension_table >> run_quality_checks
+load_artist_dimension_table >> run_quality_checks
+load_time_dimension_table >> run_quality_checks
+#step 6
+run_quality_checks >> end_operator
