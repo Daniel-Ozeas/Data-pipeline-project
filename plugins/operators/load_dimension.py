@@ -3,7 +3,7 @@ from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
 class LoadDimensionOperator(BaseOperator):
-
+    
     ui_color = '#80BD9E'
 
     @apply_defaults
@@ -17,8 +17,8 @@ class LoadDimensionOperator(BaseOperator):
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
         
         self.redshift_conn_id = redshift_conn_id
-        self.sql = sql,
-        self.truncate_table = truncate_table,
+        self.sql = sql
+        self.truncate_table = truncate_table
         self.table = table
 
     def execute(self, context):
