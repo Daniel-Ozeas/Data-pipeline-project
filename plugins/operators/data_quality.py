@@ -3,7 +3,7 @@ from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
 class DataQualityOperator(BaseOperator):
-
+    
     ui_color = '#89DA59'
 
     @apply_defaults
@@ -13,16 +13,15 @@ class DataQualityOperator(BaseOperator):
                  *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
-
         self.redshift_conn_id = redshift_conn_id
         self.table = table
-
+        
     def execute(self, context):
-        redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
+        redshift = PostgresHook(postgres_conn_id = self.redshift_conn_id)
         for table in self.table:
             records = redshift.get_records(f'SELECT COUNT(*) FROM {table}')
-            if len(records)<1 or len(records[0][0]):
+            if len(records) < 1 or len(records[0]) < 1:
                 raise ValueError(f'Data quality check failed. {table} returned no results')
             if records[0][0] < 1:
-                raise ValueError(f'Data quality check failed. {table} contained 0 rows')
-            self.log.info(f'Data quality on table {table} checked passed with {records[0][0]} records.')
+                raise ValueError(f'Data quality check failed. {table} returned no results')
+            logging.info(f'Data quality on table {table} check passed with {records[0][0]} records')
