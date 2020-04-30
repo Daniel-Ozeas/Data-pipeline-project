@@ -124,3 +124,10 @@ load_songplays_table >>load_user_dimension_table
 load_songplays_table >>load_song_dimension_table
 load_songplays_table >>load_artist_dimension_table
 load_songplays_table >>load_time_dimension_table
+#step 5
+load_user_dimension_table >> run_quality_checks
+load_song_dimension_table >> run_quality_checks
+load_artist_dimension_table >> run_quality_checks
+load_time_dimension_table >> run_quality_checks
+#step 6
+run_quality_checks >> end_operator
